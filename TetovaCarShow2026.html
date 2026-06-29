@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tetova Car Show 2026 — July 26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          gold: '#DA344D',
+          'gold-light': '#F06A7D',
+          'gold-dim': '#7A1E2D',
+          charcoal: '#1a1a1a',
+          dark: '#0d0d0d',
+          silver: '#a8a8a8',
+          'silver-light': '#d4d4d4',
+          white: '#f5f5f0',
+          'glass': 'rgba(255,255,255,0.04)',
+          'glass-border': 'rgba(255,255,255,0.08)',
+        },
+        fontFamily: {
+          'bebas': ["'Bebas Neue'", 'sans-serif'],
+          'inter': ["'Inter'", 'sans-serif'],
+          'playfair': ["'Playfair Display'", 'serif'],
+        },
+      },
+    },
+  }
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#DA344D;
+  --gold-light:#F06A7D;
+  --gold-dim:#7A1E2D;
+  --charcoal:#1a1a1a;
+  --dark:#0d0d0d;
+  --silver:#a8a8a8;
+  --silver-light:#d4d4d4;
+  --white:#f5f5f0;
+  --glass:rgba(255,255,255,0.04);
+  --glass-border:rgba(255,255,255,0.08);
+}
+html{scroll-behavior:smooth}
+body{
+  background:#0d0d0d;
+  color:var(--white);
+  font-family:'Inter',sans-serif;
+  overflow-x:hidden;
+}
+
+/* ===== LOADER ===== */
+#loader{position:fixed;inset:0;background:#0d0d0d;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+.loader-logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,5vw,4rem);letter-spacing:0.3em;color:var(--white);opacity:0}
+.loader-line{width:min(200px,60vw);height:1px;background:rgba(255,255,255,0.1);position:relative;overflow:hidden}
+.loader-progress{position:absolute;top:0;left:0;height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));width:0%;transition:width 0.05s linear}
+.loader-num{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.2em;color:var(--silver);opacity:0}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.5rem clamp(1.2rem,4vw,4rem);display:flex;align-items:center;justify-content:space-between;transition:all 0.5s cubic-bezier(0.4,0,0.2,1)}
+nav.scrolled{background:rgba(13,13,13,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);padding:1rem clamp(1.2rem,4vw,4rem)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.25em;color:var(--white);text-decoration:none;flex-shrink:0}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{color:rgba(245,245,240,0.6);text-decoration:none;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;transition:color 0.3s;font-weight:500}
+.nav-links a:hover{color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:1.5rem}
+.lang-selector{display:flex;gap:0.5rem;align-items:center}
+.lang-btn{background:transparent;border:1px solid var(--glass-border);color:var(--silver);padding:0.5rem 0.8rem;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;font-family:'Inter',sans-serif;font-weight:500}
+.lang-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(218,52,77,0.1)}
+.lang-btn:hover{border-color:var(--gold-light);color:var(--gold-light)}
+.nav-cta{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:0.6rem 1.5rem;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;font-family:'Inter',sans-serif;font-weight:500;white-space:nowrap}
+.nav-cta:hover{background:var(--gold);color:#0d0d0d}
+
+/* Hamburger */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;z-index:1001}
+.nav-hamburger span{display:block;width:24px;height:1.5px;background:var(--white);transition:all 0.35s cubic-bezier(0.4,0,0.2,1);transform-origin:center}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* Mobile menu drawer */
+.nav-drawer{position:fixed;inset:0;background:rgba(13,13,13,0.97);backdrop-filter:blur(20px);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;opacity:0;pointer-events:none;transition:opacity 0.4s ease}
+.nav-drawer.open{opacity:1;pointer-events:all}
+.nav-drawer ul{list-style:none;display:flex;flex-direction:column;align-items:center;gap:1.8rem}
+.nav-drawer ul a{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,8vw,3.5rem);letter-spacing:0.15em;color:var(--white);text-decoration:none;transition:color 0.3s}
+.nav-drawer ul a:hover{color:var(--gold)}
+.nav-drawer .drawer-cta{border:1px solid var(--gold);color:var(--gold);padding:0.8rem 2.5rem;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;margin-top:1rem}
+.nav-drawer .drawer-cta:hover{background:var(--gold);color:#0d0d0d}
+.nav-drawer .lang-selector{display:flex;gap:0.5rem;justify-content:center}
+
+/* ===== HERO ===== */
+#hero{
+    position:relative;
+    width:100%;
+    height:100svh;
+    min-height:700px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(to right,
+            rgba(13,13,13,.85) 0%,
+            rgba(13,13,13,.45) 40%,
+            rgba(13,13,13,.55) 100%),
+        linear-gradient(to top,
+            rgba(13,13,13,.9) 0%,
+            transparent 45%);
+    z-index:1;
+}
+.hero-side-fade-left,
+.hero-side-fade-right{
+    display:none;
+}
+.hero-content{
+    position:relative;
+    z-index:2;
+    width:min(700px,90%);
+    margin-left:clamp(70px,8vw,140px);
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    text-align:left;
+}
+.hero-typewriter-wrap{display:flex;align-items:center;justify-content:flex-start;gap:0.6em;margin-top:1.2rem;min-height:1.6rem;}
+.typewriter-prefix{font-size:clamp(0.62rem,1.4vw,0.85rem);letter-spacing:0.28em;text-transform:uppercase;color:var(--silver);font-family:'Inter',sans-serif;font-weight:400;white-space:nowrap;flex-shrink:0}
+.typewriter-text{font-size:clamp(0.62rem,1.4vw,0.85rem);letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);font-family:'Inter',sans-serif;font-weight:600;white-space:nowrap}
+.typewriter-cursor{display:inline-block;width:2px;height:1em;background:var(--gold);margin-left:3px;vertical-align:middle;animation:cursorBlink 0.75s step-end infinite}
+@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-eyebrow{font-size:clamp(0.55rem,1.5vw,0.7rem);letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;opacity:0;display:block}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,16vw,14rem);line-height:0.9;letter-spacing:0.05em;opacity:0;color:var(--white)}
+.hero-title span{display:block}
+.hero-title .accent{color:transparent;-webkit-text-stroke:1px rgba(218,52,77,0.5)}
+.hero-subtitle{font-size:clamp(0.65rem,1.8vw,1rem);letter-spacing:0.3em;text-transform:uppercase;color:var(--silver);margin-top:1.2rem;opacity:0}
+.hero-date-pill{display:inline-flex;align-items:center;gap:clamp(0.5rem,2vw,1rem);margin-top:clamp(1.5rem,3vw,2.5rem);padding:clamp(0.6rem,1.5vw,0.8rem) clamp(1rem,3vw,2rem);border:1px solid var(--glass-border);background:var(--glass);backdrop-filter:blur(10px);opacity:0;flex-wrap:wrap;justify-content:center}
+.hero-date-pill span{font-size:clamp(0.6rem,1.2vw,0.7rem);letter-spacing:0.2em;text-transform:uppercase;color:var(--silver)}
+.hero-date-pill strong{font-family:'Bebas Neue',sans-serif;font-size:clamp(0.9rem,2vw,1.1rem);letter-spacing:0.15em;color:var(--gold)}
+.pill-div{width:1px;height:20px;background:rgba(255,255,255,0.15)}
+.hero-scroll{position:absolute;bottom:clamp(1.5rem,4vh,3rem);left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.8rem;opacity:0}
+.hero-scroll span{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--silver)}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:0.3;transform:scaleY(0.5);transform-origin:top}50%{opacity:1;transform:scaleY(1);transform-origin:top}}
+
+/* Particles */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.4}
+
+/* Section base */
+section{position:relative;z-index:1}
+.section-eyebrow{font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:block}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,7vw,6rem);letter-spacing:0.05em;line-height:0.95;color:var(--white)}
+.gold-line{width:60px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:1.5rem 0}
+
+/* ===== COUNTDOWN ===== */
+#countdown{padding:clamp(4rem,10vw,8rem) clamp(1rem,4vw,4rem);text-align:center;position:relative;overflow:hidden}
+#countdown::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(218,52,77,0.06) 0%,transparent 70%)}
+.countdown-label{font-size:0.7rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:3rem;display:block}
+.countdown-grid{display:flex;align-items:center;justify-content:center;gap:clamp(0.5rem,2vw,2rem);flex-wrap:nowrap}
+.countdown-item{display:flex;flex-direction:column;align-items:center;gap:0.5rem;min-width:0;flex:1;max-width:180px}
+.countdown-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,12vw,8rem);line-height:1;color:var(--white);position:relative;width:100%;text-align:center;transition:color 0.15s}
+.countdown-num.flip{color:var(--gold)}
+.countdown-unit{font-size:clamp(0.5rem,1.2vw,0.65rem);letter-spacing:0.35em;text-transform:uppercase;color:var(--silver);white-space:nowrap}
+.countdown-sep{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,5rem);color:var(--gold-dim);align-self:flex-start;margin-top:0.3rem;opacity:0.5;line-height:1.2;flex-shrink:0}
+.countdown-expired{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.5rem,5vw,3rem);color:var(--gold);letter-spacing:0.1em;display:none}
+
+/* ===== EVENT INFO ===== */
+#event{padding:clamp(4rem,10vw,8rem) clamp(1.2rem,4vw,4rem);display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,6rem);max-width:1400px;margin:0 auto;align-items:center}
+.event-card{background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(20px);padding:clamp(1.5rem,4vw,3rem);position:relative;overflow:hidden}
+.event-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.event-detail{display:flex;align-items:flex-start;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid var(--glass-border)}
+.event-detail:last-child{border-bottom:none}
+.event-detail-icon{width:40px;height:40px;border:1px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.event-detail-icon svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.event-detail-label{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--silver);margin-bottom:0.3rem}
+.event-detail-value{font-size:1.1rem;font-weight:500;color:var(--white)}
+.event-detail-sub{font-size:0.8rem;color:var(--silver);margin-top:0.2rem}
+.dj-badge{margin-top:2rem;padding:1.2rem 1.5rem;background:linear-gradient(135deg,rgba(218,52,77,0.1),rgba(218,52,77,0.03));border:1px solid rgba(218,52,77,0.2);display:flex;align-items:center;gap:1rem}
+.dj-disc{width:40px;height:40px;border-radius:50%;background:conic-gradient(var(--gold-dim),var(--charcoal),var(--gold-dim));animation:spin 3s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dj-label{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.2rem}
+.dj-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.1em;color:var(--white)}
+
+/* ===== TICKETS ===== */
+#tickets{padding:clamp(4rem,10vw,8rem) clamp(1.2rem,4vw,4rem);max-width:1400px;margin:0 auto}
+.tickets-header{text-align:center;margin-bottom:clamp(3rem,6vw,5rem)}
+.tickets-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,2rem)}
+.ticket-card{position:relative;padding:clamp(1.5rem,3vw,3rem) clamp(1.2rem,2.5vw,2.5rem);border:1px solid var(--glass-border);background:var(--glass);transition:all 0.5s cubic-bezier(0.4,0,0.2,1);overflow:hidden}
+.ticket-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(218,52,77,0.08),transparent);opacity:0;transition:opacity 0.5s}
+.ticket-card:hover::before{opacity:1}
+.ticket-card:hover{border-color:rgba(218,52,77,0.3);transform:translateY(-8px)}
+.ticket-card.featured{border-color:rgba(218,52,77,0.4);background:linear-gradient(135deg,rgba(218,52,77,0.07),var(--glass))}
+.ticket-card.featured::after{content:'MOST POPULAR';position:absolute;top:1rem;right:1rem;font-size:0.55rem;letter-spacing:0.2em;color:var(--gold);border:1px solid var(--gold-dim);padding:0.3rem 0.7rem}
+.ticket-type{font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--silver);margin-bottom:1.5rem;display:block}
+.ticket-price{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5rem);line-height:1;color:var(--white);margin-bottom:0.3rem}
+.ticket-price span{font-size:clamp(1.5rem,4vw,2rem);color:var(--gold)}
+.ticket-desc{font-size:0.8rem;color:var(--silver);margin-bottom:2rem;line-height:1.6}
+.ticket-divider{height:1px;background:linear-gradient(90deg,var(--gold-dim),transparent);margin-bottom:2rem}
+.ticket-perks{list-style:none;display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2.5rem}
+.ticket-perks li{font-size:0.8rem;color:rgba(245,245,240,0.7);display:flex;align-items:center;gap:0.8rem}
+.ticket-perks li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.ticket-buy{display:block;text-align:center;padding:0.9rem;border:1px solid var(--gold-dim);color:var(--gold);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;font-weight:500}
+.ticket-buy:hover{background:var(--gold);color:#0d0d0d}
+.tickets-where{margin-top:4rem;padding:clamp(1.2rem,3vw,2.5rem);border:1px solid var(--glass-border);background:var(--glass);display:flex;align-items:center;gap:clamp(1rem,3vw,3rem);flex-wrap:wrap}
+.tickets-where-label{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+.tickets-where-divider{width:1px;height:40px;background:var(--glass-border)}
+.ticket-venue{display:flex;flex-direction:column;gap:0.2rem}
+.ticket-venue-name{font-weight:500;font-size:0.9rem;color:var(--white)}
+.ticket-venue-loc{font-size:0.75rem;color:var(--silver)}
+
+/* ===== AWARDS ===== */
+#awards{padding:clamp(4rem,10vw,8rem) clamp(1.2rem,4vw,4rem);max-width:1400px;margin:0 auto}
+.awards-header{text-align:center;margin-bottom:clamp(3rem,6vw,5rem)}
+.awards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.award-card{position:relative;padding:clamp(1.5rem,4vw,3rem) 2rem;text-align:center;overflow:hidden;border:1px solid var(--glass-border);background:var(--glass);transition:all 0.5s}
+.award-card:hover{border-color:rgba(218,52,77,0.4);transform:translateY(-6px)}
+.award-trophy{width:80px;height:80px;margin:0 auto 2rem;position:relative}
+.trophy-svg{width:100%;height:100%}
+.award-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.4rem,3vw,2rem);letter-spacing:0.1em;color:var(--white);margin-bottom:0.5rem}
+.award-desc{font-size:0.75rem;color:var(--silver);letter-spacing:0.05em;line-height:1.6}
+.award-glow{position:absolute;bottom:-2rem;left:50%;transform:translateX(-50%);width:100px;height:100px;background:radial-gradient(circle,rgba(218,52,77,0.15),transparent 70%);pointer-events:none}
+
+/* ===== GALLERY ===== */
+#gallery{padding:clamp(4rem,10vw,8rem) clamp(1.2rem,4vw,4rem);max-width:1600px;margin:0 auto}
+.gallery-header{margin-bottom:4rem}
+.gallery-video, .gallery-item {background:rgba(255,255,255,0.03)}
+
+/* ===== LOCATION ===== */
+#location{padding:clamp(4rem,10vw,8rem) clamp(1.2rem,4vw,4rem);max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:center}
+.map-wrapper{position:relative;border:1px solid var(--glass-border);overflow:hidden;border-radius:2px}
+.map-wrapper::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);z-index:2}
+.map-wrapper iframe{width:100%;height:min(400px,55vw);filter:grayscale(30%) brightness(0.9) contrast(1.1);display:block;border:none}
+
+/* Food & drinks */
+.food-drinks{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap}
+.fd-badge{padding:0.6rem 1.2rem;border:1px solid var(--glass-border);background:var(--glass);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--silver);display:flex;align-items:center;gap:0.6rem}
+.fd-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
+
+/* ===== CONTACT ===== */
+#contact{padding:clamp(4rem,10vw,8rem) clamp(1.2rem,4vw,4rem);text-align:center;position:relative;overflow:hidden}
+#contact::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(218,52,77,0.04) 0%,transparent 70%)}
+.contact-buttons{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:clamp(1rem,2vw,2rem);max-width:1200px;margin:4rem auto 0}
+.contact-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;border:1px solid var(--glass-border);background:var(--glass);backdrop-filter:blur(10px);text-decoration:none;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);border-radius:2px}
+.contact-btn:hover{border-color:var(--gold);background:rgba(218,52,77,0.08);transform:translateY(-4px);box-shadow:0 12px 32px rgba(218,52,77,0.2)}
+.contact-btn-icon{width:56px;height:56px;border:1px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;border-radius:2px}
+.contact-btn-icon svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.contact-btn-label{font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--white);font-weight:600;font-family:'Bebas Neue',sans-serif}
+.contact-btn-text{font-size:0.7rem;letter-spacing:0.1em;color:var(--silver);font-family:'Inter',sans-serif}
+
+/* ===== SPONSORS ===== */
+#sponsors{padding:clamp(3rem,6vw,5rem) clamp(1.2rem,4vw,4rem);max-width:1400px;margin:0 auto;text-align:center}
+.sponsors-label{font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--silver);margin-bottom:3rem;display:block}
+.sponsors-grid{display:flex;align-items:center;justify-content:center;gap:clamp(1rem,3vw,3rem);flex-wrap:wrap}
+.sponsor-link{display:inline-flex;align-items:center;justify-content:center;padding:1rem 2.5rem;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:1rem;letter-spacing:0.15em;text-transform:uppercase;font-family:'Bebas Neue',sans-serif;text-decoration:none;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);cursor:pointer}
+.sponsor-link:hover{background:var(--gold);color:#0d0d0d;box-shadow:0 8px 32px rgba(218,52,77,0.3)}
+.sponsor-link span{font-size:inherit}
+
+/* ===== FOOTER ===== */
+footer{border-top:1px solid var(--glass-border);padding:clamp(2rem,4vw,3rem) clamp(1.2rem,4vw,4rem);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.2em;color:var(--white)}
+.footer-logo span{color:var(--gold)}
+.footer-copy{font-size:0.7rem;color:var(--silver);letter-spacing:0.05em}
+.footer-links{display:flex;gap:2rem;flex-wrap:wrap}
+.footer-links a{font-size:0.7rem;color:var(--silver);text-decoration:none;letter-spacing:0.1em;transition:color 0.3s}
+.footer-links a:hover{color:var(--gold)}
+
+/* ===== REVEAL UTILITIES ===== */
+.reveal{opacity:0;transform:translateY(40px)}
+.reveal-left{opacity:0;transform:translateX(-60px)}
+.reveal-right{opacity:0;transform:translateX(60px)}
+.reveal-scale{opacity:1;transform:scale(1)}
+.hr-gold{height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);margin:0 clamp(1.2rem,4vw,4rem);opacity:0.4}
+
+/* ===== TABLET: 601px – 1024px ===== */
+@media(min-width:601px) and (max-width:1024px){
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  .nav-cta{display:none}
+
+  #event{grid-template-columns:1fr;gap:2.5rem}
+  .tickets-grid{grid-template-columns:1fr 1fr;gap:1.5rem}
+  .ticket-card.featured{order:-1}
+  .awards-grid{grid-template-columns:1fr 1fr;gap:1.5rem}
+  .awards-grid .award-card:last-child{grid-column:span 2}
+  #location{grid-template-columns:1fr;gap:2.5rem}
+  .map-wrapper iframe{height:300px}
+  .contact-buttons{grid-template-columns:1fr 1fr;gap:1.5rem}
+  .hero-typewriter-wrap{justify-content:flex-start;}
+}
+
+/* ===== MOBILE: up to 600px ===== */
+@media(max-width:600px){
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  .nav-cta{display:none}
+
+  .hero-title{font-size:clamp(3.5rem,18vw,5.5rem)}
+  .hero-eyebrow{font-size:0.55rem;letter-spacing:0.25em}
+  .hero-date-pill{gap:0.5rem;padding:0.6rem 1rem}
+  .pill-div{display:none}
+  .hero-scroll{bottom:1.5rem}
+  .scroll-line{height:35px}
+
+  .countdown-grid{gap:0.2rem}
+  .countdown-num{font-size:clamp(2.8rem,14vw,4.5rem)}
+  .countdown-unit{font-size:0.5rem;letter-spacing:0.2em}
+  .countdown-sep{font-size:clamp(2rem,10vw,3.5rem);margin-top:0.2rem}
+
+  #event{grid-template-columns:1fr;gap:2rem}
+  .tickets-grid{grid-template-columns:1fr}
+  .awards-grid{grid-template-columns:1fr}
+  #location{grid-template-columns:1fr;gap:2rem}
+  .map-wrapper iframe{height:220px}
+  .contact-buttons{grid-template-columns:1fr 1fr;gap:1rem}
+  .contact-btn{padding:1.5rem;gap:0.8rem}
+  .contact-btn-icon{width:48px;height:48px}
+  .contact-btn-icon svg{width:24px;height:24px}
+  .contact-btn-label{font-size:0.7rem}
+  .tickets-where{flex-direction:column;align-items:flex-start;gap:1rem}
+  .tickets-where-divider{display:none}
+
+  footer{flex-direction:column;text-align:center}
+  .footer-links{justify-content:center}
+  .social-links{gap:0.7rem}
+  .social-link{padding:0.7rem 1rem;font-size:0.7rem}
+
+  #sponsors .sponsors-grid{gap:1rem}
+  .sponsor-slot{width:70px;height:40px}
+}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">Tetova Car Show</div>
+  <div class="loader-line"><div class="loader-progress" id="loaderBar"></div></div>
+  <div class="loader-num" id="loaderNum">0%</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="flex items-center h-full">
+  <img
+    src="Logo.png"
+    alt="Logo"
+    class="h-8 sm:h-9 md:h-10 lg:h-11 w-auto object-contain"
+  />
+</a>
+  <ul class="nav-links">
+    <li><a href="#event" data-i18n="event">Event</a></li>
+    <li><a href="#tickets" data-i18n="tickets">Tickets</a></li>
+    <li><a href="#awards" data-i18n="awards">Awards</a></li>
+    <li><a href="#gallery" data-i18n="gallery">Gallery</a></li>
+    <li><a href="#location" data-i18n="location">Location</a></li>
+    <li><a href="#contact" data-i18n="contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-selector" id="langSelector">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="sq">SQ</button>
+      <button class="lang-btn" data-lang="mk">MK</button>
+    </div>
+    <a href="#tickets" class="nav-cta" data-i18n="getTickets">Get Tickets</a>
+    <div class="nav-hamburger" id="hamburger" aria-label="Open menu" role="button" tabindex="0">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="nav-drawer" id="navDrawer">
+  <ul>
+    <li><a href="#event" class="drawer-link" data-i18n="event">Event</a></li>
+    <li><a href="#tickets" class="drawer-link" data-i18n="tickets">Tickets</a></li>
+    <li><a href="#awards" class="drawer-link" data-i18n="awards">Awards</a></li>
+    <li><a href="#gallery" class="drawer-link" data-i18n="gallery">Gallery</a></li>
+    <li><a href="#location" class="drawer-link" data-i18n="location">Location</a></li>
+    <li><a href="#contact" class="drawer-link" data-i18n="contact">Contact</a></li>
+  </ul>
+  <div class="lang-selector" style="margin-top:1rem">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="sq">SQ</button>
+    <button class="lang-btn" data-lang="mk">MK</button>
+  </div>
+  <a href="#tickets" class="drawer-cta drawer-link" data-i18n="getTickets">Get Tickets</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" id="heroVideo">
+    <source src="hero.mp4" type="video/mp4"/>
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-side-fade-left"></div>
+  <div class="hero-side-fade-right"></div>
+  <div class="hero-content">
+    <h1 class="hero-title" id="heroTitle">
+      <span id="heroLine1" data-i18n="heroBrand">TETOVA</span>
+      <span class="accent" id="heroLine2" data-i18n="heroShow">CAR SHOW</span>
+      <span id="heroLine3" data-i18n="heroYear">2026</span>
+    </h1>
+    <div class="hero-typewriter-wrap" id="heroTypewriter">
+      <span class="typewriter-prefix">July 26 —</span>
+      <span class="typewriter-text" id="twText"></span><span class="typewriter-cursor" id="twCursor"></span>
+    </div>
+  </div>
+  <div class="hero-scroll" id="heroScroll">
+    <span data-i18n="scroll">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<section id="countdown">
+  <span class="countdown-label reveal" data-i18n="timeUntilShow">Time Until The Show</span>
+  <div class="countdown-grid" id="countdownGrid">
+    <div class="countdown-item reveal">
+      <div class="countdown-num" id="cdDays">00</div>
+      <div class="countdown-unit" data-i18n="days">Days</div>
+    </div>
+    <div class="countdown-sep reveal">:</div>
+    <div class="countdown-item reveal">
+      <div class="countdown-num" id="cdHours">00</div>
+      <div class="countdown-unit" data-i18n="hours">Hours</div>
+    </div>
+    <div class="countdown-sep reveal">:</div>
+    <div class="countdown-item reveal">
+      <div class="countdown-num" id="cdMins">00</div>
+      <div class="countdown-unit" data-i18n="minutes">Minutes</div>
+    </div>
+    <div class="countdown-sep reveal">:</div>
+    <div class="countdown-item reveal">
+      <div class="countdown-num" id="cdSecs">00</div>
+      <div class="countdown-unit" data-i18n="seconds">Seconds</div>
+    </div>
+  </div>
+  <div class="countdown-expired" id="cdExpired" data-i18n="showBegun">The Show Has Begun — See You There!</div>
+</section>
+
+<div class="hr-gold"></div>
+
+<!-- EVENT INFO -->
+<section id="event">
+  <div class="event-text">
+    <span class="section-eyebrow reveal-left" data-i18n="eventEyebrow">The Event</span>
+    <h2 class="section-title reveal-left"><span data-i18n="eventTitle1">AN EVENING</span><br/><em style="font-family:'Playfair Display',serif;font-style:italic;color:var(--gold)" data-i18n="eventTitle2">Unlike</em><br/><span data-i18n="eventTitle3">ANY OTHER</span></h2>
+    <div class="gold-line reveal-left"></div>
+    <p class="reveal-left" style="color:var(--silver);line-height:1.8;font-size:0.9rem;max-width:420px" data-i18n="eventDesc">A curated celebration of automotive excellence beneath the Šar Mountains. From pristine oldtimers to custom builds, every machine here tells a story worth hearing.</p>
+    <div class="food-drinks reveal-left" style="margin-top:2rem">
+      <div class="fd-badge" data-i18n="foodAvail">Food Available</div>
+      <div class="fd-badge" data-i18n="drinksAvail">Drinks Available</div>
+    </div>
+  </div>
+  <div class="event-visual reveal-right">
+    <div class="event-card">
+      <div class="event-detail">
+        <div class="event-detail-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div>
+          <div class="event-detail-label" data-i18n="detailDate">Date</div>
+          <div class="event-detail-value">July 26, 2026</div>
+          <div class="event-detail-sub" data-i18n="sunday">Sunday</div>
+        </div>
+      </div>
+      <div class="event-detail">
+        <div class="event-detail-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <div class="event-detail-label" data-i18n="detailDoors">Doors Open</div>
+          <div class="event-detail-value">18:00</div>
+          <div class="event-detail-sub" data-i18n="eveningNight">Evening through night</div>
+        </div>
+      </div>
+      <div class="event-detail">
+        <div class="event-detail-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="event-detail-label" data-i18n="detailVenue">Venue</div>
+          <div class="event-detail-value">Bashkim Tours Garage</div>
+          <div class="event-detail-sub" data-i18n="venueLoc">Tetovo, North Macedonia</div>
+        </div>
+      </div>
+      <div class="dj-badge">
+        <div class="dj-disc"></div>
+        <div>
+          <div class="dj-label" data-i18n="liveDJ">Live DJ Performance</div>
+          <div class="dj-name" data-i18n="djName">DJ Smily</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hr-gold"></div>
+
+<!-- TICKETS -->
+<section id="tickets">
+  <div class="tickets-header">
+    <span class="section-eyebrow reveal" data-i18n="ticketsEyebrow">Admission</span>
+    <h2 class="section-title reveal"><span data-i18n="chooseYour">CHOOSE YOUR</span><br/><span style="color:var(--gold)" data-i18n="experience">EXPERIENCE</span></h2>
+  </div>
+  <div class="tickets-grid">
+    <div class="ticket-card reveal-scale">
+      <span class="ticket-type" data-i18n="earlyBird">Early Bird</span>
+      <div class="ticket-price"><span>€</span>25</div>
+      <p class="ticket-desc" data-i18n="earlyBirdDesc">Limited availability. Secure your spot before they're gone.</p>
+      <div class="ticket-divider"></div>
+      <ul class="ticket-perks">
+        <li data-i18n="fullAccess">Full event access</li>
+        <li data-i18n="foodDrinks">Food & drinks available</li>
+        <li data-i18n="liveDJTicket">Live DJ — DJ Smily</li>
+        <li data-i18n="awardAccess">Award ceremony access</li>
+      </ul>
+      <a href="#contact" class="ticket-buy" data-i18n="buyEarly">Secure Early Bird</a>
+    </div>
+    <div class="ticket-card featured reveal-scale">
+      <span class="ticket-type" data-i18n="atDoor">At The Door</span>
+      <div class="ticket-price"><span>€</span>40</div>
+      <p class="ticket-desc" data-i18n="atDoorDesc">Standard admission. Available at the venue on the night.</p>
+      <div class="ticket-divider"></div>
+      <ul class="ticket-perks">
+        <li data-i18n="fullAccess">Full event access</li>
+        <li data-i18n="foodDrinks">Food & drinks available</li>
+        <li data-i18n="liveDJTicket">Live DJ — DJ Smily</li>
+        <li data-i18n="awardAccess">Award ceremony access</li>
+      </ul>
+      <a href="#contact" class="ticket-buy" data-i18n="buyDoor">Purchase At Door</a>
+    </div>
+    <div class="ticket-card reveal-scale" style="border-color:rgba(218,52,77,0.25)">
+      <span class="ticket-type" data-i18n="vip">VIP</span>
+      <div class="ticket-price" style="color:var(--gold)"><span>€</span>100</div>
+      <p class="ticket-desc" data-i18n="vipDesc">The full luxury experience. Priority access and exclusive treatment.</p>
+      <div class="ticket-divider"></div>
+      <ul class="ticket-perks">
+        <li data-i18n="priorityEntry">Priority entry — no queue</li>
+        <li data-i18n="vipLounge">VIP lounge access</li>
+        <li data-i18n="premiumFood">Premium food & drinks</li>
+        <li data-i18n="frontRow">Front-row award ceremony</li>
+        <li data-i18n="exclusiveVip">Exclusive VIP area</li>
+      </ul>
+      <a href="#contact" class="ticket-buy" style="border-color:var(--gold);color:var(--gold)" data-i18n="goVip">Go VIP</a>
+    </div>
+  </div>
+  <div class="tickets-where reveal">
+    <div class="tickets-where-label" data-i18n="purchaseInPerson">Purchase In Person At</div>
+    <div class="tickets-where-divider"></div>
+    <div class="ticket-venue">
+      <div class="ticket-venue-name">Napoli</div>
+      <div class="ticket-venue-loc" data-i18n="tetovo">Tetovo</div>
+    </div>
+    <div class="tickets-where-divider"></div>
+    <div class="ticket-venue">
+      <div class="ticket-venue-name">Tobacco Doni</div>
+      <div class="ticket-venue-loc" data-i18n="centerLoc">Tetovo City Center</div>
+    </div>
+    <div class="tickets-where-divider"></div>
+    <div class="ticket-venue">
+      <div class="ticket-venue-name" style="color:var(--silver);font-weight:300;font-size:0.8rem" data-i18n="orContact">Or contact us directly via WhatsApp</div>
+    </div>
+  </div>
+</section>
+
+<div class="hr-gold"></div>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="awards-header">
+    <span class="section-eyebrow reveal" data-i18n="awardsEyebrow">Recognition</span>
+    <h2 class="section-title reveal"><span data-i18n="awardsOf">AWARDS OF</span><br/><span style="color:var(--gold)" data-i18n="excellence">EXCELLENCE</span></h2>
+    <p class="reveal" style="color:var(--silver);font-size:0.85rem;margin-top:1rem;max-width:500px;margin-left:auto;margin-right:auto" data-i18n="awardsDesc">Three prestigious trophies. One unforgettable night. The machines that earn them will be remembered long after the engines cool.</p>
+  </div>
+  <div class="awards-grid">
+    <div class="award-card reveal-scale">
+      <div class="award-trophy">
+        <svg class="trophy-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="tg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F06A7D"/><stop offset="100%" stop-color="#7A1E2D"/></linearGradient></defs>
+          <path d="M28 10 h24 v25 a12 12 0 0 1 -24 0 Z" fill="none" stroke="url(#tg1)" stroke-width="1.5"/>
+          <path d="M28 20 Q16 20 16 32 Q16 42 28 44" fill="none" stroke="url(#tg1)" stroke-width="1.5"/>
+          <path d="M52 20 Q64 20 64 32 Q64 42 52 44" fill="none" stroke="url(#tg1)" stroke-width="1.5"/>
+          <line x1="40" y1="47" x2="40" y2="60" stroke="url(#tg1)" stroke-width="1.5"/>
+          <line x1="28" y1="60" x2="52" y2="60" stroke="url(#tg1)" stroke-width="2"/>
+          <line x1="24" y1="66" x2="56" y2="66" stroke="url(#tg1)" stroke-width="2"/>
+          <circle cx="40" cy="28" r="6" fill="none" stroke="#DA344D" stroke-width="1" opacity="0.5"/>
+          <text x="40" y="32" text-anchor="middle" font-family="Bebas Neue" font-size="7" fill="#DA344D" opacity="0.8">★</text>
+        </svg>
+      </div>
+      <div class="award-name" data-i18n="bestOldtimer">Best Oldtimer</div>
+      <p class="award-desc" data-i18n="bestOldtimerDesc">Celebrating the classics. The vehicle that best preserves and presents automotive history.</p>
+      <div class="award-glow"></div>
+    </div>
+    <div class="award-card reveal-scale" style="border-color:rgba(218,52,77,0.2)">
+      <div class="award-trophy">
+        <svg class="trophy-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="tg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#F06A7D"/><stop offset="100%" stop-color="#7A1E2D"/></linearGradient></defs>
+          <circle cx="40" cy="38" r="22" fill="none" stroke="url(#tg2)" stroke-width="1.5"/>
+          <circle cx="40" cy="38" r="14" fill="none" stroke="url(#tg2)" stroke-width="1" opacity="0.5"/>
+          <circle cx="40" cy="38" r="6" fill="none" stroke="#DA344D" stroke-width="1" opacity="0.7"/>
+          <line x1="40" y1="10" x2="40" y2="15" stroke="url(#tg2)" stroke-width="2"/>
+          <line x1="40" y1="61" x2="40" y2="66" stroke="url(#tg2)" stroke-width="2"/>
+          <line x1="12" y1="38" x2="17" y2="38" stroke="url(#tg2)" stroke-width="2"/>
+          <line x1="63" y1="38" x2="68" y2="38" stroke="url(#tg2)" stroke-width="2"/>
+          <line x1="40" y1="60" x2="40" y2="70" stroke="url(#tg2)" stroke-width="1.5"/>
+          <line x1="30" y1="70" x2="50" y2="70" stroke="url(#tg2)" stroke-width="2"/>
+          <text x="40" y="42" text-anchor="middle" font-family="Bebas Neue" font-size="10" fill="#DA344D">★</text>
+        </svg>
+      </div>
+      <div class="award-name" data-i18n="bestSounding">Best Sounding Car</div>
+      <p class="award-desc" data-i18n="bestSoundingDesc">The vehicle with the most impressive exhaust note and audio presence.</p>
+      <div class="award-glow"></div>
+    </div>
+    <div class="award-card reveal-scale">
+      <div class="award-trophy">
+        <svg class="trophy-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="tg3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#F06A7D"/><stop offset="50%" stop-color="#DA344D"/><stop offset="100%" stop-color="#7A1E2D"/></linearGradient></defs>
+          <circle cx="40" cy="35" r="18" fill="none" stroke="url(#tg3)" stroke-width="1.5"/>
+          <circle cx="40" cy="35" r="10" fill="none" stroke="url(#tg3)" stroke-width="1" opacity="0.6"/>
+          <path d="M40 17 L43 28 L55 28 L45 35 L49 47 L40 40 L31 47 L35 35 L25 28 L37 28 Z" fill="none" stroke="#DA344D" stroke-width="1" opacity="0.7"/>
+          <line x1="40" y1="53" x2="40" y2="63" stroke="url(#tg3)" stroke-width="1.5"/>
+          <line x1="28" y1="63" x2="52" y2="63" stroke="url(#tg3)" stroke-width="2"/>
+          <line x1="24" y1="69" x2="56" y2="69" stroke="url(#tg3)" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="award-name" data-i18n="bestLooking">Best Looking Car</div>
+      <p class="award-desc" data-i18n="bestLookingDesc">The cleanest, most beautiful build of the event. Judged by all attendees.</p>
+      <div class="award-glow"></div>
+    </div>
+  </div>
+</section>
+
+<div class="hr-gold"></div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-header">
+    <span class="section-eyebrow reveal-left" data-i18n="galEyebrow">Visual Archive</span>
+    <h2 class="section-title reveal-left" data-i18n="gallery">GALLERY</h2>
+    <p class="reveal-left" style="color:var(--silver);font-size:0.8rem;margin-top:0.8rem;letter-spacing:0.1em" data-i18n="galDesc">Photos & videos from previous editions!</p>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+    <!-- Video (Left) -->
+    <div class= "grid grid-cols-1 gap-6 lg:gap-8">
+     <video class="gallery-video reveal w-full h-auto rounded border border-glass-border hover:border-gold-light transition-colors aspect-video object-cover"
+  controls
+  autoplay
+  muted
+  loop
+  playsinline
+>
+  <source src="CarShowVideo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+       <!-- Photo 1 -->
+      <div>
+        <img src="BmwRolls.jpeg" alt="BMW Rolls" class="gallery-item reveal w-full h-auto rounded border border-glass-border hover:border-gold-light transition-colors aspect-video object-cover" />
+      </div>
+    </div>
+    
+    <!-- Photos Grid (Right) -->
+    <div class="grid grid-cols-1 gap-6 lg:gap-8">
+     
+      
+      <!-- Photo 2 -->
+      <div>
+        <img src="Ferrari.jpeg" alt="Ferrari" class="gallery-item reveal w-full h-auto rounded border border-glass-border hover:border-gold-light transition-colors aspect-video object-cover" />
+      </div>
+      
+      <!-- Photo 3 -->
+      <div>
+        <img src="OldTimer.jpeg" alt="Old Timer" class="gallery-item reveal w-full h-auto rounded border border-glass-border hover:border-gold-light transition-colors aspect-video object-cover" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hr-gold"></div>
+
+<!-- LOCATION -->
+<section id="location">
+  <div>
+    <span class="section-eyebrow reveal-left" data-i18n="locEyebrow">Find Us</span>
+    <h2 class="section-title reveal-left"><span data-i18n="the">THE</span><br/><span style="color:var(--gold)" data-i18n="venue">VENUE</span></h2>
+    <div class="gold-line reveal-left"></div>
+    <p class="reveal-left" style="color:var(--silver);line-height:1.8;font-size:0.9rem;margin-bottom:2rem" data-i18n="venueDesc">Bashkim Tours Garage, Tetovo, North Macedonia. Nestled beneath the iconic Šar Mountains — a setting as dramatic as the machines it hosts.</p>
+    <div class="event-detail reveal-left" style="border:1px solid var(--glass-border);padding:1.5rem;background:var(--glass)">
+      <div class="event-detail-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <div>
+        <div class="event-detail-label" data-i18n="address">Address</div>
+        <div class="event-detail-value">Bashkim Tours Garage</div>
+        <div class="event-detail-sub" data-i18n="venueLoc">Tetovo, North Macedonia</div>
+      </div>
+    </div>
+  </div>
+  <div class="map-wrapper reveal-right">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d524.6106225036448!2d20.983546199616956!3d41.94346128644466!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1353fbf52b5fb751%3A0xbd2f217b18f8329!2sBashkim%20Tours%20Garage!5e0!3m2!1smk!2smk!4v1782752562594!5m2!1smk!2smk"
+      allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</section>
+
+<div class="hr-gold"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <span class="section-eyebrow reveal" data-i18n="contactEyebrow">Contact &amp; Connect</span>
+  <h2 class="section-title reveal"><span data-i18n="getInText">GET IN</span><br/><span style="color:var(--gold)" data-i18n="touchText">TOUCH</span></h2>
+  <div class="contact-buttons">
+   <a href="https://wa.me/38970890456" target="_blank" class="contact-btn reveal-scale">
+
+  <div class="contact-btn-icon text-red-600">
+    <!-- WhatsApp Official SVG -->
+    <svg viewBox="0 0 32 32" width="24" height="24" fill="none">
+      <path
+        d="M19.11 17.205c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
+        fill="#25D366"
+      />
+      <path
+        d="M16 3C9.383 3 4 8.383 4 15c0 2.386.7 4.61 1.908 6.5L4.5 28l6.7-1.36A11.94 11.94 0 0016 27c6.617 0 12-5.383 12-12S22.617 3 16 3zm0 22c-1.86 0-3.63-.48-5.18-1.38l-.37-.22-3.98.81.84-3.87-.24-.4A9.94 9.94 0 016 15c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"
+        fill="#25D366"
+      />
+    </svg>
+  </div>
+
+  <span class="contact-btn-label" data-i18n="whatsapp">WhatsApp</span>
+  <span class="contact-btn-text">+389 70 890 456</span>
+
+</a>
+    <a href="https://instagram.com/tetovacarshow" target="_blank" class="contact-btn reveal-scale">
+      <div class="contact-btn-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </div>
+      <span class="contact-btn-label" data-i18n="instagram">Instagram</span>
+      <span class="contact-btn-text">@tetovacarshow</span>
+    </a>
+    <a href="https://tiktok.com/@tetovacarshow" target="_blank" class="contact-btn reveal-scale">
+      <div class="contact-btn-icon">
+        <svg viewBox="0 0 24 24" fill="var(--gold)"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.67a8.27 8.27 0 004.84 1.55V6.77a4.85 4.85 0 01-1.07-.08z"/></svg>
+      </div>
+      <span class="contact-btn-label" data-i18n="tiktok">TikTok</span>
+      <span class="contact-btn-text">@tetovacarshow</span>
+    </a>
+    <a href="https://facebook.com/tetovacarshow" target="_blank" class="contact-btn reveal-scale">
+      <div class="contact-btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" fill="var(--gold)"/></svg>
+      </div>
+      <span class="contact-btn-label" data-i18n="facebook">Facebook</span>
+      <span class="contact-btn-text">Tetova Car Show</span>
+    </a>
+  </div>
+</section>
+
+<div class="hr-gold"></div>
+
+<!-- SPONSORS -->
+<section id="sponsors">
+  <span class="sponsors-label reveal" data-i18n="proudlyPresented">Proudly Presented By</span>
+  <div class="sponsors-grid reveal">
+    <a href="https://www.instagram.com/flowwcode/" class="sponsor-link" id="codeflowSponsor" title="Visit CodeFlow on Instagram">
+      <span>CodeFlow</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">TETOVA CAR SHOW</div>
+  <p class="footer-copy" data-i18n="copyright">© 2026 Tetova Car Show. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="#event" data-i18n="event">Event</a>
+    <a href="#tickets" data-i18n="tickets">Tickets</a>
+    <a href="#contact" data-i18n="contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+
+  // === TYPEWRITER ===
+(function() {
+  const phrases = [
+    'Tetovo, North Macedonia',
+    'Bashkim Tours Garage',
+    'Live DJ — DJ Smily',
+    'July 26 · Doors at 18:00',
+    'Oldtimers & Custom Builds',
+    'Where Machines Become Art',
+  ];
+  const el = document.getElementById('twText');
+  if (!el) return;
+  let phraseIdx = 0, charIdx = 0, deleting = false;
+  const SPEED_TYPE = 55, SPEED_DELETE = 28, PAUSE_FULL = 2200, PAUSE_EMPTY = 380;
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      charIdx++;
+      el.textContent = current.slice(0, charIdx);
+      if (charIdx === current.length) { setTimeout(() => { deleting = true; tick(); }, PAUSE_FULL); return; }
+      setTimeout(tick, SPEED_TYPE + Math.random() * 25);
+    } else {
+      charIdx--;
+      el.textContent = current.slice(0, charIdx);
+      if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; setTimeout(tick, PAUSE_EMPTY); return; }
+      setTimeout(tick, SPEED_DELETE);
+    }
+  }
+  window._startTypewriter = function() { setTimeout(tick, 600); };
+})();
+// ===== HAMBURGER MENU =====
+const hamburger = document.getElementById('hamburger');
+const navDrawer = document.getElementById('navDrawer');
+const drawerLinks = document.querySelectorAll('.drawer-link');
+
+function toggleMenu(open) {
+  hamburger.classList.toggle('open', open);
+  navDrawer.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+
+hamburger.addEventListener('click', () => toggleMenu(!navDrawer.classList.contains('open')));
+hamburger.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') toggleMenu(!navDrawer.classList.contains('open')); });
+drawerLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+
+// ===== SCROLL TO TOP ON REFRESH =====
+window.addEventListener('load', () => {
+  window.scrollTo(0, 0);
+});
+
+// ===== LOADER =====
+const loaderLogo = document.querySelector('.loader-logo');
+const loaderNum = document.getElementById('loaderNum');
+const loaderBar = document.getElementById('loaderBar');
+const loader = document.getElementById('loader');
+
+gsap.to(loaderLogo, {opacity:1, duration:0.8, delay:0.2});
+gsap.to(loaderNum, {opacity:1, duration:0.5, delay:0.4});
+
+let progress = 0;
+const interval = setInterval(() => {
+  progress += Math.random() * 4 + 1;
+  if(progress >= 100) { progress = 100; clearInterval(interval); finishLoad(); }
+  loaderBar.style.width = progress + '%';
+  loaderNum.textContent = Math.floor(progress) + '%';
+}, 60);
+
+function finishLoad() {
+  setTimeout(() => {
+    gsap.to(loader, {opacity:0, duration:0.8, ease:'power2.inOut', onComplete:() => {
+      loader.style.display = 'none';
+      initAnimations();
+    }});
+  }, 400);
+}
+
+// ===== PARTICLES =====
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, particleList = [];
+
+function resizeCanvas() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const count = window.innerWidth < 600 ? 30 : 60;
+for(let i = 0; i < count; i++) {
+  particleList.push({x:Math.random()*1000, y:Math.random()*1000, r:Math.random()*1.5+0.2, vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.2, a:Math.random()*0.5+0.1});
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, W, H);
+  particleList.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x % W, p.y % H, p.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(218,52,77,${p.a})`;
+    ctx.fill();
+    p.x += p.vx; p.y += p.vy;
+    if(p.x < 0) p.x = W; if(p.x > W) p.x = 0;
+    if(p.y < 0) p.y = H; if(p.y > H) p.y = 0;
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// ===== COUNTDOWN (real, precise) =====
+const EVENT_DATE = new Date('2026-07-26T18:00:00');
+
+function pad(n) { return String(Math.max(0, n)).padStart(2, '0'); }
+
+let prevSecs = -1;
+function updateCountdown() {
+  const now = new Date();
+  const diff = EVENT_DATE - now;
+
+  if(diff <= 0) {
+    document.getElementById('countdownGrid').style.display = 'none';
+    document.getElementById('cdExpired').style.display = 'block';
+    return;
+  }
+
+  const totalSecs = Math.floor(diff / 1000);
+  const d = Math.floor(totalSecs / 86400);
+  const h = Math.floor((totalSecs % 86400) / 3600);
+  const m = Math.floor((totalSecs % 3600) / 60);
+  const s = totalSecs % 60;
+
+  document.getElementById('cdDays').textContent = pad(d);
+  document.getElementById('cdHours').textContent = pad(h);
+  document.getElementById('cdMins').textContent = pad(m);
+
+  const secEl = document.getElementById('cdSecs');
+  if(s !== prevSecs) {
+    secEl.classList.add('flip');
+    secEl.textContent = pad(s);
+    setTimeout(() => secEl.classList.remove('flip'), 150);
+    prevSecs = s;
+  }
+}
+
+updateCountdown();
+setInterval(updateCountdown, 500); // run every 500ms for precision
+
+// ===== NAV SCROLL =====
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+}, {passive: true});
+
+// ===== ANIMATIONS =====
+function initAnimations() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero entrance — set initial states first
+
+gsap.set('#heroLine1,#heroLine2,#heroLine3', {y:80, opacity:0});
+gsap.set('#heroTypewriter,#heroScroll', {y:20, opacity:0});
+
+const heroTL = gsap.timeline({delay:0.1});
+heroTL
+  .to('#heroLine1', {opacity:1, y:0, duration:0.9, ease:'power3.out'})
+  .to('#heroLine2', {opacity:1, y:0, duration:0.9, ease:'power3.out'}, '-=0.6')
+  .to('#heroLine3', {opacity:1, y:0, duration:0.9, ease:'power3.out'}, '-=0.6')
+  .to('#heroTypewriter', {opacity:1, y:0, duration:0.6, ease:'power2.out', onComplete:() => {
+    if(window._startTypewriter) window._startTypewriter();
+  }}, '-=0.2')
+  .to('#heroScroll', {opacity:1, duration:0.6}, '-=0.1');
+
+  // Hero video parallax (desktop only)
+  if(window.innerWidth > 600) {
+    gsap.to('.hero-video', {
+      yPercent:25,
+      ease:'none',
+      scrollTrigger:{trigger:'#hero', start:'top top', end:'bottom top', scrub:true}
+    });
+  }
+
+  // Generic reveals
+  gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {opacity:1, y:0, duration:0.9, ease:'power3.out',
+      scrollTrigger:{trigger:el, start:'top 88%', toggleActions:'play reverse play reverse'}
+    });
+  });
+  gsap.utils.toArray('.reveal-left').forEach(el => {
+    gsap.to(el, {opacity:1, x:0, duration:0.9, ease:'power3.out',
+      scrollTrigger:{trigger:el, start:'top 88%', toggleActions:'play reverse play reverse'}
+    });
+  });
+  gsap.utils.toArray('.reveal-right').forEach(el => {
+    gsap.to(el, {opacity:1, x:0, duration:0.9, ease:'power3.out',
+      scrollTrigger:{trigger:el, start:'top 88%', toggleActions:'play reverse play reverse'}
+    });
+  });
+  gsap.utils.toArray('.reveal-scale').forEach((el, i) => {
+    gsap.to(el, {opacity:1, scale:1, duration:0.8, ease:'power3.out', delay:i*0.08,
+      scrollTrigger:{trigger:el, start:'top 88%', toggleActions:'play reverse play reverse'}
+    });
+  });
+
+  // Stagger ticket cards
+  gsap.from('.ticket-card', {
+    opacity:0, y:60, stagger:0.3, duration:0.9, ease:'power3.out',
+    scrollTrigger:{trigger:'.tickets-grid', start:'top 82%', toggleActions:'play reverse play reverse'}
+  });
+
+  // Section title clip reveals
+  gsap.utils.toArray('.section-title').forEach(el => {
+    gsap.from(el, {
+      clipPath:'inset(0 100% 0 0)',
+      duration:1.2, ease:'power4.out',
+      scrollTrigger:{trigger:el, start:'top 88%', toggleActions:'play reverse play reverse'}
+    });
+  });
+}
+
+// ===== LANGUAGE SWITCHING =====
+const translations = {
+  en: {
+    // Navigation
+    getTickets: 'Get Tickets',
+    event: 'Event',
+    tickets: 'Tickets',
+    awards: 'Awards',
+    gallery: 'Gallery',
+    location: 'Location',
+    contact: 'Contact',
+    // Hero
+    heroLocation: 'Bashkim Tours Garage · Tetovo · North Macedonia',
+    heroBrand: 'TETOVA',
+    heroShow: 'CAR SHOW',
+    heroYear: '2026',
+    heroTagline: 'Where Machines Become Art',
+    pillDate: 'Date',
+    pillDoors: 'Doors Open',
+    scroll: 'Scroll',
+    // Countdown
+    timeUntilShow: 'Time Until The Show',
+    days: 'Days',
+    hours: 'Hours',
+    minutes: 'Minutes',
+    seconds: 'Seconds',
+    showBegun: 'The Show Has Begun — See You There!',
+    // Event
+    eventEyebrow: 'The Event',
+    eventTitle1: 'AN EVENING',
+    eventTitle2: 'Unlike',
+    eventTitle3: 'ANY OTHER',
+    eventDesc: 'A curated celebration of automotive excellence beneath the Šar Mountains. From pristine oldtimers to custom builds, every machine here tells a story worth hearing.',
+    foodAvail: 'Food Available',
+    drinksAvail: 'Drinks Available',
+    detailDate: 'Date',
+    sunday: 'Sunday',
+    detailDoors: 'Doors Open',
+    eveningNight: 'Evening through night',
+    detailVenue: 'Venue',
+    venueLoc: 'Tetovo, North Macedonia',
+    liveDJ: 'Live DJ Performance',
+    djName: 'DJ Smily',
+    // Tickets
+    ticketsEyebrow: 'Admission',
+    chooseYour: 'CHOOSE YOUR',
+    experience: 'EXPERIENCE',
+    earlyBird: 'REGULAR',
+    earlyBirdDesc: 'Limited availability. Secure your spot before they\'re gone.',
+    fullAccess: 'Full event access',
+    foodDrinks: 'Food & drinks available',
+    liveDJTicket: 'Live DJ — DJ Smily',
+    awardAccess: 'Award ceremony access',
+    buyEarly: 'Secure Early Bird',
+    atDoor: 'At The Door',
+    atDoorDesc: 'Standard admission. Available at the venue on the night.',
+    buyDoor: 'Purchase At Door',
+    vip: 'VIP',
+    vipDesc: 'The full luxury experience. Priority access and exclusive treatment.',
+    priorityEntry: 'Priority entry — no queue',
+    vipLounge: 'VIP lounge access',
+    premiumFood: 'Premium food & drinks',
+    frontRow: 'Front-row award ceremony',
+    exclusiveVip: 'Exclusive VIP area',
+    goVip: 'Go VIP',
+    purchaseInPerson: 'Purchase In Person At',
+    tetovo: 'Tetovo',
+    centerLoc: 'Tetovo City Center',
+    orContact: 'Or contact us directly via WhatsApp',
+    // Awards
+    awardsEyebrow: 'Recognition',
+    awardsOf: 'AWARDS OF',
+    excellence: 'EXCELLENCE',
+    awardsDesc: 'Three prestigious trophies. One unforgettable night. The machines that earn them will be remembered long after the engines cool.',
+    bestOldtimer: 'Best Oldtimer',
+    bestOldtimerDesc: 'Celebrating the classics. The vehicle that best preserves and presents automotive history.',
+    bestSounding: 'Best Sounding Car',
+    bestSoundingDesc: 'The vehicle with the most impressive exhaust note and audio presence.',
+    bestLooking: 'Best Looking Car',
+    bestLookingDesc: 'The cleanest, most beautiful build of the event. Judged by all attendees.',
+    // Gallery
+    galEyebrow: 'Visual Archive',
+    galDesc: 'Photos & videos from previous editions!',
+    // Location
+    locEyebrow: 'Find Us',
+    the: 'THE',
+    venue: 'VENUE',
+    venueDesc: 'Bashkim Tours Garage, Tetovo, North Macedonia. Nestled beneath the iconic Šar Mountains — a setting as dramatic as the machines it hosts.',
+    address: 'Address',
+    // Contact
+    contactEyebrow: 'Contact & Connect',
+    getInText: 'GET IN',
+    touchText: 'TOUCH',
+    whatsapp: 'WhatsApp',
+    instagram: 'Instagram',
+    tiktok: 'TikTok',
+    facebook: 'Facebook',
+    // Sponsors
+    proudlyPresented: 'Proudly Presented By',
+    // Footer
+    copyright: '© 2026 Tetova Car Show. All rights reserved.',
+  },
+  sq: {
+    // Navigation
+    getTickets: 'Merr Biletat',
+    event: 'Ngjarja',
+    tickets: 'Biletat',
+    awards: 'Çmimet',
+    gallery: 'Galeria',
+    location: 'Vendndodhja',
+    contact: 'Kontakti',
+    // Hero
+    heroLocation: 'Bashkim Tours Garage · Tetovo · Maqedonia e Veriut',
+    heroBrand: 'TETOVA',
+    heroShow: 'CAR SHOW',
+    heroYear: '2026',
+    heroTagline: 'Ku Makinat Bëhen Arti',
+    pillDate: 'Data',
+    pillDoors: 'Dyert Hapen',
+    scroll: 'Scroll',
+    // Countdown
+    timeUntilShow: 'Koha deri në Shfaqje',
+    days: 'Ditë',
+    hours: 'Orë',
+    minutes: 'Minuta',
+    seconds: 'Sekonda',
+    showBegun: 'Shfaqja Ka Filluar — Shihemi Atje!',
+    // Event
+    eventEyebrow: 'Ngjarja',
+    eventTitle1: 'NJË MBRËMJE',
+    eventTitle2: 'Ndryshe',
+    eventTitle3: 'SI ASNJË TJETËR',
+    eventDesc: 'Një festim i kuruar i shkëlqimit automobilistik nën Malin e Sharrit. Nga makina të vjetra në gjendje perfekte deri te ndërtimi i personalizuar, çdo makinë këtu ka një histori të vyer dëgjimi.',
+    foodAvail: 'Ushqimi i Dispozicionuar',
+    drinksAvail: 'Pijet Te Dispoziconuara',
+    detailDate: 'Data',
+    sunday: 'E diel',
+    detailDoors: 'Dyert Hapen',
+    eveningNight: 'Mbrëmja përmes natës',
+    detailVenue: 'Vendndodhja',
+    venueLoc: 'Tetovo, Maqedonia e Veriut',
+    liveDJ: 'Live DJ Performance',
+    djName: 'DJ Smily',
+    // Tickets
+    ticketsEyebrow: 'Hyrje',
+    chooseYour: 'ZGJIDHNI PËRVOJËN',
+    experience: 'TUAJ',
+    earlyBird: 'Zogj i Hershëm',
+    earlyBirdDesc: 'Disponueshmëri e kufizuar. Sigurojeni vendin tuaj përpara se të mbarohen.',
+    fullAccess: 'Qasje e plotë në ngjarje',
+    foodDrinks: 'Ushqim & pije në dispozicion',
+    liveDJTicket: 'Live DJ — DJ Smily',
+    awardAccess: 'Qasje në ceremoninë e çmimeve',
+    buyEarly: 'Siguro Zogj i Hershëm',
+    atDoor: 'Në Derë',
+    atDoorDesc: 'Hyrje standarde. Disponibel në vendin e ngjarjes natën.',
+    buyDoor: 'Bli në Derë',
+    vip: 'VIP',
+    vipDesc: 'Përvojën e plotë të luksit. Qasje prioritare dhe trajtim eksklusiv.',
+    priorityEntry: 'Hyrje prioritare — pa rresht',
+    vipLounge: 'Qasje në loungjenë VIP',
+    premiumFood: 'Ushqim dhe pije premium',
+    frontRow: 'Ceremonia e çmimeve në rradhën e parë',
+    exclusiveVip: 'Zonë ekskluzive VIP',
+    goVip: 'Shko VIP',
+    purchaseInPerson: 'Bll në Person në',
+    tetovo: 'Tetovo',
+    centerLoc: 'Qendra e Qytetit Tetovo',
+    orContact: 'Ose kontaktoni ne drejtpërdrejt përmes WhatsApp',
+    // Awards
+    awardsEyebrow: 'Njohje',
+    awardsOf: 'ÇMIMET E',
+    excellence: 'SHKËLQIMIT',
+    awardsDesc: 'Tre trofe. Një natë të paharrueshme. Makinat që i fitojnë do të mbahen në mend edhe pasi motorët të ftohen.',
+    bestOldtimer: 'Makina Old Timer më e Mirë',
+    bestOldtimerDesc: 'Duke nderuar klasikët. Makina që më mirë ruan dhe paraqet historinë automobilistike.',
+    bestSounding: 'Makina me Zërin më të Mirë',
+    bestSoundingDesc: 'Makina me zërin më të fuqishëm dhe më tërheqës.',
+    bestLooking: 'Makina më e Bukur',
+    bestLookingDesc: 'Ndërtimi më i pastër dhe më i bukur i makinës. Vlerësohet nga të gjithë ndjekësit.',
+    // Gallery
+    galEyebrow: 'Arkiv Vizual',
+    galDesc: 'Foto dhe video nga edicionet e kaluara!',
+    // Location
+    locEyebrow: 'NA GJENI',
+    the: 'VENDNDODHJA E',
+    venue: 'EVENTIT',
+    venueDesc: 'Bashkim Tours Garage, Tetovo, Maqedonia e Veriut. I vendosur nën Malin ikonik të Sharrit — një vendndodhje aq dramatike sa makinat që e presin.',
+    address: 'Adresa',
+    // Contact
+    contactEyebrow: 'Kontakti & Lidhja',
+    getInText: 'MUND TË NA',
+    touchText: 'KONTAKTONI',
+    whatsapp: 'WhatsApp',
+    instagram: 'Instagram',
+    tiktok: 'TikTok',
+    facebook: 'Facebook',
+    // Sponsors
+    proudlyPresented: 'Me Krenari i Prezantuar Nga',
+    // Footer
+    copyright: '© 2026 Tetova Car Show. Të gjitha të drejtat e rezervuara.',
+  },
+  mk: {
+    // Navigation
+    getTickets: 'Купи Билет',
+    event: 'Настан',
+    tickets: 'Билети',
+    awards: 'Награди',
+    gallery: 'Галерија',
+    location: 'Локација',
+    contact: 'Контакт',
+    // Hero
+    heroLocation: 'Bashkim Tours Garage · Tetovo · Северна Македонија',
+    heroBrand: 'ТЕТОВА',
+    heroShow: 'CAR SHOW',
+    heroYear: '2026',
+    heroTagline: 'Каде Машините Станувааат Уметност',
+    pillDate: 'Датум',
+    pillDoors: 'Врати Отворени',
+    scroll: 'Scroll',
+    // Countdown
+    timeUntilShow: 'Време до Шоуто',
+    days: 'Денови',
+    hours: 'Часови',
+    minutes: 'Минути',
+    seconds: 'Секунди',
+    showBegun: 'Шоуто Почна — Видиме се Таму!',
+    // Event
+    eventEyebrow: 'Настанот',
+    eventTitle1: 'ВЕЧЕР',
+    eventTitle2: 'Поинаква',
+    eventTitle3: 'ОД КАКВА БИЛО',
+    eventDesc: 'Куриран празник на автомобилскиот совршенство под Шаровата планина. Од чисти олдтајмери до прилагодени градби, секоја машина овде има приказна вредна слушање.',
+    foodAvail: 'Храна Достапна',
+    drinksAvail: 'Пијачки Достапни',
+    detailDate: 'Датум',
+    sunday: 'Недела',
+    detailDoors: 'Врати Отворени',
+    eveningNight: 'Вечер низ ноќ',
+    detailVenue: 'Локација',
+    venueLoc: 'Тетово, Северна Македонија',
+    liveDJ: 'Live DJ Перформанса',
+    djName: 'DJ Smily',
+    // Tickets
+    ticketsEyebrow: 'Приступ',
+    chooseYour: 'ИЗБЕРИ ТВОЈА',
+    experience: 'ИСКУСТВО',
+    earlyBird: 'Рано Птичче',
+    earlyBirdDesc: 'Ограничена достапност. Обезбеди го твоето место пред да се свршат.',
+    fullAccess: 'Полн приступ на настанот',
+    foodDrinks: 'Храна & пијачки достапни',
+    liveDJTicket: 'Live DJ — DJ Smily',
+    awardAccess: 'Приступ на церемонијата на награди',
+    buyEarly: 'Обезбеди Рано Птичче',
+    atDoor: 'На Вратата',
+    atDoorDesc: 'Стандардна припис. Достапна во локацијата на ноќта.',
+    buyDoor: 'Купи на Вратата',
+    vip: 'VIP',
+    vipDesc: 'Полното луксузно искуство. Приоритетен приступ и исклучителна третман.',
+    priorityEntry: 'Приоритетен влез — без редица',
+    vipLounge: 'Приступ до VIP lounge',
+    premiumFood: 'Премиум храна & пијачки',
+    frontRow: 'Прва редица на церемонијата',
+    exclusiveVip: 'Исклучителна VIP област',
+    goVip: 'Оди VIP',
+    purchaseInPerson: 'Купи Лично на',
+    tetovo: 'Тетово',
+    centerLoc: 'Тетово Град Центар',
+    orContact: 'Или контактирај нас директно преку WhatsApp',
+    // Awards
+    awardsEyebrow: 'Признание',
+    awardsOf: 'НАГРАДИ НА',
+    excellence: 'СОВРШЕНСТВО',
+    awardsDesc: 'Три престижни трофеи. Една незаборавна ноќ. Машините што ќе ги добијат ќе бидат сеќаваче долго откако моторите да се охладат.',
+    bestOldtimer: 'Најдобра Олдтајмер',
+    bestOldtimerDesc: 'Чествување на класикуните. Машината што најдобро ја чува и го претставува автомобилската историја.',
+    bestSounding: 'Машина со Најдобар Звук',
+    bestSoundingDesc: 'Машината со најимпресивната забелешка за издув и присуство на аудио.',
+    bestLooking: 'Најлепша Машина',
+    bestLookingDesc: 'Најчистото и најлепшото градба на настанот. Проценета од сите присутни.',
+    // Gallery
+    galEyebrow: 'Визуелен Архив',
+    galDesc: 'Фотографии и видеа од претходните изданија!',
+    // Location
+    locEyebrow: 'Нас Пронајди',
+    the: 'ЛОКАЦИЈАТА',
+    venue: 'НА ВЕНЕТО',
+    venueDesc: 'Bashkim Tours Garage, Тетово, Северна Македонија. Положен под иконичната Шарова планина — локација толку драматична колку машините што ги нуди.',
+    address: 'Адреса',
+    // Contact
+    contactEyebrow: 'Контакт & Врска',
+    getInText: 'КОНТАКТИРАЈ',
+    touchText: 'НАС',
+    whatsapp: 'WhatsApp',
+    instagram: 'Instagram',
+    tiktok: 'TikTok',
+    facebook: 'Facebook',
+    // Sponsors
+    proudlyPresented: 'Горди Презентирано Од',
+    // Footer
+    copyright: '© 2026 Tetova Car Show. Сите права резервирани.',
+  }
+};
+
+let currentLang = localStorage.getItem('language') || 'en';
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('language', lang);
+  
+  // Update active button on all language selectors
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+  
+  // Update all translated text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if(translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+}
+
+// Language button listeners (for both desktop and mobile)
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    setLanguage(btn.dataset.lang);
+  });
+});
+
+// Set initial language
+setLanguage(currentLang);
+</script>
+</body>
+</html>
