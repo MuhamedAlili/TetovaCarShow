@@ -4,7 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Tetova Car Show 2026 — July 26</title>
-<link rel="icon" type="image/png" href="Logo.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
@@ -199,7 +198,7 @@ section{position:relative;z-index:1}
 .tickets-header{text-align:center;margin-bottom:clamp(3rem,6vw,5rem)}
 .tickets-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,2rem)}
 .ticket-card{position:relative;padding:clamp(1.5rem,3vw,3rem) clamp(1.2rem,2.5vw,2.5rem);border:1px solid var(--glass-border);background:var(--glass);transition:all 0.5s cubic-bezier(0.4,0,0.2,1);overflow:hidden}
-.ticket-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(218,52,77,0.08),transparent);opacity:0;transition:opacity 0.5s}
+.ticket-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(218,52,77,0.08),transparent);opacity:0;transition:opacity 0.5s;pointer-events:none}
 .ticket-card:hover::before{opacity:1}
 .ticket-card:hover{border-color:rgba(218,52,77,0.3);transform:translateY(-8px)}
 .ticket-card.featured{border-color:rgba(218,52,77,0.4);background:linear-gradient(135deg,rgba(218,52,77,0.07),var(--glass))}
@@ -421,7 +420,7 @@ footer{border-top:1px solid var(--glass-border);padding:clamp(2rem,4vw,3rem) cla
       <span id="heroLine3" data-i18n="heroYear">2026</span>
     </h1>
     <div class="hero-typewriter-wrap" id="heroTypewriter">
-      <span class="typewriter-prefix">July 26 —</span>
+      <span class="typewriter-prefix" data-i18n="heroDate">July 26 —</span>
       <span class="typewriter-text" id="twText"></span><span class="typewriter-cursor" id="twCursor"></span>
     </div>
   </div>
@@ -521,40 +520,80 @@ footer{border-top:1px solid var(--glass-border);padding:clamp(2rem,4vw,3rem) cla
 <section id="tickets">
   <div class="tickets-header">
     <span class="section-eyebrow reveal" data-i18n="ticketsEyebrow">Admission</span>
-    <h2 class="section-title reveal"><span data-i18n="chooseYour">CHOOSE YOUR</span><br/><span style="color:var(--gold)" data-i18n="experience">EXPERIENCE</span></h2>
+    <h2 class="section-title reveal">
+      <span data-i18n="chooseYour">CHOOSE YOUR</span><br>
+      <span style="color:var(--gold)" data-i18n="experience">EXPERIENCE</span>
+    </h2>
   </div>
+
   <div class="tickets-grid">
+
+    <!-- Early Bird -->
     <div class="ticket-card reveal-scale">
       <span class="ticket-type" data-i18n="earlyBird">Early Bird</span>
       <div class="ticket-price"><span>€</span>25</div>
-      <p class="ticket-desc" data-i18n="earlyBirdDesc">Limited availability. Secure your spot before they're gone.</p>
+      <p class="ticket-desc" data-i18n="earlyBirdDesc">
+        Limited availability. Secure your spot before they're gone.
+      </p>
+
       <div class="ticket-divider"></div>
+
       <ul class="ticket-perks">
         <li data-i18n="fullAccess">Full event access</li>
         <li data-i18n="foodDrinks">Food & drinks available</li>
         <li data-i18n="liveDJTicket">Live DJ — DJ Smily</li>
         <li data-i18n="awardAccess">Award ceremony access</li>
       </ul>
-      <a href="#contact" class="ticket-buy" data-i18n="buyEarly">Secure Early Bird</a>
+
+      <a
+        href="https://wa.me/38970890456?text=Hi!%20I%20want%20to%20buy%20an%20Early%20Bird%20ticket%20for%20Tetovo%20Car%20Show."
+        rel="noopener noreferrer"
+        class="ticket-buy"
+        data-i18n="buyEarly">
+          Secure Early Bird
+      </a>
     </div>
+
+    <!-- At The Door -->
     <div class="ticket-card featured reveal-scale">
       <span class="ticket-type" data-i18n="atDoor">At The Door</span>
       <div class="ticket-price"><span>€</span>40</div>
-      <p class="ticket-desc" data-i18n="atDoorDesc">Standard admission. Available at the venue on the night.</p>
+      <p class="ticket-desc" data-i18n="atDoorDesc">
+        Standard admission. Available at the venue on the night.
+      </p>
+
       <div class="ticket-divider"></div>
+
       <ul class="ticket-perks">
         <li data-i18n="fullAccess">Full event access</li>
         <li data-i18n="foodDrinks">Food & drinks available</li>
         <li data-i18n="liveDJTicket">Live DJ — DJ Smily</li>
         <li data-i18n="awardAccess">Award ceremony access</li>
       </ul>
-      <a href="#contact" class="ticket-buy" data-i18n="buyDoor">Purchase At Door</a>
+
+      <a
+        href="https://wa.me/38970890456?text=Hi!%20I%20want%20to%20buy%20an%20At%20The%20Door%20ticket%20for%20Tetovo%20Car%20Show."
+        target="_blank"
+        rel="noopener noreferrer"
+        class="ticket-buy"
+        data-i18n="buyDoor">
+        Purchase At Door
+      </a>
     </div>
+
+    <!-- VIP -->
     <div class="ticket-card reveal-scale" style="border-color:rgba(218,52,77,0.25)">
       <span class="ticket-type" data-i18n="vip">VIP</span>
-      <div class="ticket-price" style="color:var(--gold)"><span>€</span>100</div>
-      <p class="ticket-desc" data-i18n="vipDesc">The full luxury experience. Priority access and exclusive treatment.</p>
+      <div class="ticket-price" style="color:var(--gold)">
+        <span>€</span>100
+      </div>
+
+      <p class="ticket-desc" data-i18n="vipDesc">
+        The full luxury experience. Priority access and exclusive treatment.
+      </p>
+
       <div class="ticket-divider"></div>
+
       <ul class="ticket-perks">
         <li data-i18n="priorityEntry">Priority entry — no queue</li>
         <li data-i18n="vipLounge">VIP lounge access</li>
@@ -562,27 +601,54 @@ footer{border-top:1px solid var(--glass-border);padding:clamp(2rem,4vw,3rem) cla
         <li data-i18n="frontRow">Front-row award ceremony</li>
         <li data-i18n="exclusiveVip">Exclusive VIP area</li>
       </ul>
-      <a href="#contact" class="ticket-buy" style="border-color:var(--gold);color:var(--gold)" data-i18n="goVip">Go VIP</a>
+
+      <a
+          href="https://wa.me/38970890456?text=Hi!%20I%20am%20interested%20in%20buying%20a%20VIP%20ticket%20for%20Tetovo%20Car%20Show."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ticket-buy"
+          style="border-color:var(--gold);color:var(--gold)"
+          data-i18n="goVip">
+          Go VIP
+      </a>
     </div>
+
   </div>
+
   <div class="tickets-where reveal">
-    <div class="tickets-where-label" data-i18n="purchaseInPerson">Purchase In Person At</div>
+    <div class="tickets-where-label" data-i18n="purchaseInPerson">
+      Purchase In Person At
+    </div>
+
     <div class="tickets-where-divider"></div>
+
     <div class="ticket-venue">
       <div class="ticket-venue-name">Napoli</div>
       <div class="ticket-venue-loc" data-i18n="tetovo">Tetovo</div>
     </div>
+
     <div class="tickets-where-divider"></div>
+
     <div class="ticket-venue">
       <div class="ticket-venue-name">Tobacco Doni</div>
-      <div class="ticket-venue-loc" data-i18n="centerLoc">Tetovo City Center</div>
+      <div class="ticket-venue-loc" data-i18n="centerLoc">
+        Tetovo City Center
+      </div>
     </div>
+
     <div class="tickets-where-divider"></div>
+
     <div class="ticket-venue">
-      <div class="ticket-venue-name" style="color:var(--silver);font-weight:300;font-size:0.8rem" data-i18n="orContact">Or contact us directly via WhatsApp</div>
+      <div
+        class="ticket-venue-name"
+        style="color:var(--silver);font-weight:300;font-size:0.8rem"
+        data-i18n="orContact">
+        Or contact us directly via WhatsApp
+      </div>
     </div>
   </div>
 </section>
+
 
 <div class="hr-gold"></div>
 
@@ -744,7 +810,7 @@ footer{border-top:1px solid var(--glass-border);padding:clamp(2rem,4vw,3rem) cla
       fill="currentColor"
     />
   </svg>
-  </div>
+</div>
 
   <span class="contact-btn-label" data-i18n="whatsapp">WhatsApp</span>
   <span class="contact-btn-text">+389 70 890 456</span>
@@ -801,33 +867,79 @@ footer{border-top:1px solid var(--glass-border);padding:clamp(2rem,4vw,3rem) cla
 
   // === TYPEWRITER ===
 (function() {
-  const phrases = [
-    'Tetovo, North Macedonia',
-    'Bashkim Tours Garage',
-    'Live DJ — DJ Smily',
-    'July 26 · Doors at 18:00',
-    'Oldtimers & Custom Builds',
-    'Where Machines Become Art',
-  ];
+  const phrasesByLang = {
+    en: [
+      'Tetovo, North Macedonia',
+      'Bashkim Tours Garage',
+      'Live DJ — DJ Smily',
+      'July 26 · Doors at 18:00',
+      'Oldtimers & Custom Builds',
+      'Where Machines Become Art',
+    ],
+    sq: [
+      'Tetovo, Maqedonia e Veriut',
+      'Bashkim Tours Garage',
+      'Live DJ — DJ Smily',
+      '26 Korrik · Dyert 18:00',
+      'Oldtimers & Custom Builds',
+      'Ku Makinat Bëhen Arti',
+    ],
+    mk: [
+      'Тетово, Северна Македонија',
+      'Bashkim Tours Garage',
+      'Live DJ — DJ Smily',
+      '26 Јули · Врати 18:00',
+      'Oldtimers & Custom Builds',
+      'Каде Машините Станувааат Уметност',
+    ],
+  };
+
   const el = document.getElementById('twText');
   if (!el) return;
+
   let phraseIdx = 0, charIdx = 0, deleting = false;
+  let phrases = phrasesByLang[localStorage.getItem('language') || 'en'] || phrasesByLang.en;
   const SPEED_TYPE = 55, SPEED_DELETE = 28, PAUSE_FULL = 2200, PAUSE_EMPTY = 380;
+  let timerId = null;
+
   function tick() {
     const current = phrases[phraseIdx];
     if (!deleting) {
       charIdx++;
       el.textContent = current.slice(0, charIdx);
-      if (charIdx === current.length) { setTimeout(() => { deleting = true; tick(); }, PAUSE_FULL); return; }
-      setTimeout(tick, SPEED_TYPE + Math.random() * 25);
+      if (charIdx === current.length) {
+        timerId = setTimeout(() => { deleting = true; tick(); }, PAUSE_FULL);
+        return;
+      }
+      timerId = setTimeout(tick, SPEED_TYPE + Math.random() * 25);
     } else {
       charIdx--;
       el.textContent = current.slice(0, charIdx);
-      if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; setTimeout(tick, PAUSE_EMPTY); return; }
-      setTimeout(tick, SPEED_DELETE);
+      if (charIdx === 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        timerId = setTimeout(tick, PAUSE_EMPTY);
+        return;
+      }
+      timerId = setTimeout(tick, SPEED_DELETE);
     }
   }
-  window._startTypewriter = function() { setTimeout(tick, 600); };
+
+  function startTypewriter() {
+    if (timerId) clearTimeout(timerId);
+    timerId = setTimeout(tick, 600);
+  }
+
+  window._startTypewriter = startTypewriter;
+  window._setTypewriterLanguage = function(lang) {
+    phrases = phrasesByLang[lang] || phrasesByLang.en;
+    phraseIdx = 0;
+    charIdx = 0;
+    deleting = false;
+    el.textContent = '';
+    if (timerId) clearTimeout(timerId);
+    startTypewriter();
+  };
 })();
 // ===== HAMBURGER MENU =====
 const hamburger = document.getElementById('hamburger');
@@ -1030,6 +1142,7 @@ const translations = {
     heroBrand: 'TETOVA',
     heroShow: 'CAR SHOW',
     heroYear: '2026',
+    heroDate: 'July 26 —',
     heroTagline: 'Where Machines Become Art',
     pillDate: 'Date',
     pillDoors: 'Doors Open',
@@ -1118,18 +1231,19 @@ const translations = {
   },
   sq: {
     // Navigation
-    getTickets: 'Biletat',
-    event: 'Eventi',
+    getTickets: 'Merr Biletat',
+    event: 'Ngjarja',
     tickets: 'Biletat',
     awards: 'Çmimet',
     gallery: 'Galeria',
     location: 'Vendndodhja',
-    contact: 'Kontaktoni',
+    contact: 'Kontakti',
     // Hero
     heroLocation: 'Bashkim Tours Garage · Tetovo · Maqedonia e Veriut',
     heroBrand: 'TETOVA',
     heroShow: 'CAR SHOW',
     heroYear: '2026',
+    heroDate: '26 Korrik —',
     heroTagline: 'Ku Makinat Bëhen Arti',
     pillDate: 'Data',
     pillDoors: 'Dyert Hapen',
@@ -1148,7 +1262,7 @@ const translations = {
     eventTitle3: 'SI ASNJË TJETËR',
     eventDesc: 'Një festim i kuruar i shkëlqimit automobilistik nën Malin e Sharrit. Nga makina të vjetra në gjendje perfekte deri te ndërtimi i personalizuar, çdo makinë këtu ka një histori të vyer dëgjimi.',
     foodAvail: 'Ushqimi i Dispozicionuar',
-    drinksAvail: 'Pijet të Dispoziconuara',
+    drinksAvail: 'Pijet Te Dispoziconuara',
     detailDate: 'Data',
     sunday: 'E diel',
     detailDoors: 'Dyert Hapen',
@@ -1161,16 +1275,16 @@ const translations = {
     ticketsEyebrow: 'Hyrje',
     chooseYour: 'ZGJIDHNI PËRVOJËN',
     experience: 'TUAJ',
-    earlyBird: 'Klient i Hershëm',
+    earlyBird: 'Zogj i Hershëm',
     earlyBirdDesc: 'Disponueshmëri e kufizuar. Sigurojeni vendin tuaj përpara se të mbarohen.',
-    fullAccess: 'Qasje e plotë në event',
+    fullAccess: 'Qasje e plotë në ngjarje',
     foodDrinks: 'Ushqim & pije në dispozicion',
     liveDJTicket: 'Live DJ — DJ Smily',
     awardAccess: 'Qasje në ceremoninë e çmimeve',
-    buyEarly: 'Siguro Vend të Hershëm',
+    buyEarly: 'Siguro Zogj i Hershëm',
     atDoor: 'Në Derë',
     atDoorDesc: 'Hyrje standarde. Disponibel në vendin e ngjarjes natën.',
-    buyDoor: 'Bleje në Derë',
+    buyDoor: 'Bli në Derë',
     vip: 'VIP',
     vipDesc: 'Përvojën e plotë të luksit. Qasje prioritare dhe trajtim eksklusiv.',
     priorityEntry: 'Hyrje prioritare — pa rresht',
@@ -1179,10 +1293,10 @@ const translations = {
     frontRow: 'Ceremonia e çmimeve në rradhën e parë',
     exclusiveVip: 'Zonë ekskluzive VIP',
     goVip: 'Shko VIP',
-    purchaseInPerson: 'Bleje në Person',
+    purchaseInPerson: 'Bll në Person në',
     tetovo: 'Tetovo',
     centerLoc: 'Qendra e Qytetit Tetovo',
-    orContact: 'Ose kontaktoni drejtpërdrejt përmes WhatsApp',
+    orContact: 'Ose kontaktoni ne drejtpërdrejt përmes WhatsApp',
     // Awards
     awardsEyebrow: 'Njohje',
     awardsOf: 'ÇMIMET E',
@@ -1212,7 +1326,7 @@ const translations = {
     tiktok: 'TikTok',
     facebook: 'Facebook',
     // Sponsors
-    proudlyPresented: 'Me Krenari e Prezantuar Nga',
+    proudlyPresented: 'Me Krenari i Prezantuar Nga',
     // Footer
     copyright: '© 2026 Tetova Car Show. Të gjitha të drejtat e rezervuara.',
   },
@@ -1230,6 +1344,7 @@ const translations = {
     heroBrand: 'ТЕТОВА',
     heroShow: 'CAR SHOW',
     heroYear: '2026',
+    heroDate: '26 Јули —',
     heroTagline: 'Каде Машините Станувааат Уметност',
     pillDate: 'Датум',
     pillDoors: 'Врати Отворени',
@@ -1332,10 +1447,24 @@ function setLanguage(lang) {
   // Update all translated text
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
-    if(translations[lang][key]) {
+    if (translations[lang] && Object.prototype.hasOwnProperty.call(translations[lang], key)) {
       el.textContent = translations[lang][key];
     }
   });
+
+  // Ensure hero title and typewriter are visible after switching language
+  const heroElements = document.querySelectorAll('#heroLine1, #heroLine2, #heroLine3, #heroTypewriter');
+  heroElements.forEach(el => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
+  if (window.gsap) {
+    gsap.set(heroElements, {opacity:1, y:0, x:0});
+  }
+
+  if (window._setTypewriterLanguage) {
+    window._setTypewriterLanguage(lang);
+  }
 }
 
 // Language button listeners (for both desktop and mobile)
